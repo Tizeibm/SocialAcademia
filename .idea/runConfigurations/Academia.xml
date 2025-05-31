@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Academia" type="DatabaseScript" editBeforeRun="true" singleton="false" nameIsGenerated="true">
+    <script-file value="$PROJECT_DIR$/SocialAcademia/Academia" />
+    <script-mode>FILE</script-mode>
+    <data-source id="3a625714-1803-43dd-8754-375f6a9e0c85" />
+    <method v="2" />
+  </configuration>
+</component>
