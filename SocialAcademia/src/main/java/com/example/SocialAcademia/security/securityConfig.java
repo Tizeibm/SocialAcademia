@@ -27,9 +27,11 @@ public class securityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .cors()
+                .and()
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/h2-console/**","/api/profiles/**","/api/posts/**","/api/follow/**","/api/notifications/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/h2-console/**","/api/profiles/**","/api/posts/**","/api/follow/**","/api/notifications/**","/api/comments/**", "/api/search/**","/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

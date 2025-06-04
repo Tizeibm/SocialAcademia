@@ -6,11 +6,16 @@ import com.example.SocialAcademia.service.ProfessorProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+
+
 @RestController
 @RequestMapping("/api/profiles/professors")
 @RequiredArgsConstructor
 public class ProfessorProfileController {
+    
     private final ProfessorProfileService professorProfileService;
+
+   
 
     @GetMapping
     public ProfessorProfileResponse getProfile(){

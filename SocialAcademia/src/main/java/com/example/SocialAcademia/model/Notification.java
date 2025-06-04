@@ -20,7 +20,7 @@ public class Notification {
     private Long id;
 
     private String message;
-    private boolean read;
+    private boolean read = false;
     private LocalDateTime createdAt;
 
     @ManyToOne

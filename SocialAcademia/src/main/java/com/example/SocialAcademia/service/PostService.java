@@ -1,14 +1,16 @@
 package com.example.SocialAcademia.service;
-
+import com.example.SocialAcademia.service.PostSpecification;
 import com.example.SocialAcademia.dto.PostRequest;
 import com.example.SocialAcademia.dto.PostResponse;
 import com.example.SocialAcademia.model.Post;
 import com.example.SocialAcademia.model.User;
-import com.example.SocialAcademia.repository.FollowRepository;
 import com.example.SocialAcademia.repository.PostLikeRepository;
 import com.example.SocialAcademia.repository.PostRepository;
 import com.example.SocialAcademia.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,18 @@ public class PostService {
         return userRepository.findByEmail(email).orElseThrow();
     }
 
+    public Page<Post> searchPosts(String keyword, LocalDateTime startDate, LocalDateTime endDate, Long authorId, Pageable pageable) {
+        Specification<Post> spec = PostSpecification.contentContains(keyword)
+                .and(PostSpecification.createdAfter(startDate))
+                .and(PostSpecification.createdBefore(endDate))
+                .and(PostSpecification.authorIs(authorId));
+        return postRepository.findAll(spec, pageable);
+    }
+
+    public Post getPostById(Long id) {
+        return postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
+    }
+
     public List<PostResponse> getFeedPost(int page, int size){
         User user = followService.getCurrentUser();
         List<Long> followeeIds = followService.getFollowingIds();
@@ -41,11 +55,12 @@ public class PostService {
         List<Post> posts = postRepository.findByUserInOrderByCreatedAtDesc(followees, PageRequest.of(page, size));
         return posts.stream().map(this::map).collect(Collectors.toList());
     }
-     public PostResponse create(PostRequest request){
+     public PostResponse create(PostRequest request, String attachmentPath) {
         Post post = Post.builder()
                 .content(request.getContent())
                 .createdAt(LocalDateTime.now())
                 .user(getCurrentUser())
+                .attachmentPath(request.getAttachmentPath())
                 .build();
         postRepository.save(post);
         return map(post);
@@ -82,7 +97,7 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    private PostResponse map(Post post){
+    public PostResponse map(Post post){
         int likeCount = postLikeRepository.countByPost(post);
         return PostResponse.builder()
                 .id(post.getId())

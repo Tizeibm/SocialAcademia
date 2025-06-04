@@ -2,6 +2,7 @@ package com.example.SocialAcademia.controller;
 
 import com.example.SocialAcademia.dto.EnterpriseProfileRequest;
 import com.example.SocialAcademia.dto.EnterpriseProfileResponse;
+
 import com.example.SocialAcademia.service.EnterpriseProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class EnterpriseProfileController {
     private final EnterpriseProfileService enterpriseProfileService;
-
+   
     @GetMapping
     public EnterpriseProfileResponse getProfile(){
         return enterpriseProfileService.get();

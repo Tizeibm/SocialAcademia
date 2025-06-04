@@ -30,6 +30,10 @@ public  class User implements UserDetails {
 
     private boolean enabled=true;
 
+    private String photoUrl;
+
+    private String bio;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private StudentProfile studentProfile;
 
